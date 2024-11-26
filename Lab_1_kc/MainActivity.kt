@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.* // För Material 3-komponenter
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,13 +39,16 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun MainScreen() {
+    // Skapa en vertikal scrollbar
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(scrollState) // Gör Column scrollbar
             .padding(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         // Rubrik
         Text(
             text = "Kotlin + Compose",
@@ -55,7 +60,7 @@ fun MainScreen() {
                 .padding(20.dp)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))   // Skapar mellanrum för samtrliga komponterer
+        Spacer(modifier = Modifier.height(16.dp))   // Skapar mellanrum för samtliga komponenter
 
         // Bild (lägg till en bild i res/drawable för att använda här)
         Image(
@@ -122,3 +127,4 @@ fun MainScreen() {
         )
     }
 }
+
