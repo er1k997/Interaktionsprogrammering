@@ -13,22 +13,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ExampleFlutterScreen extends StatelessWidget {    // defines a screen layout that won’t change while the app is running
-  
+class ExampleFlutterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),                           // Presents the Titel section 
-      body: Center(
-        child: Column(                                  // Arranges its widgets vertically.
-          mainAxisAlignment: MainAxisAlignment.center,  // The widgets are placed in the middle of the screen.
-          children: [
-            _buildImage(),
-            // const SizedBox(height: 10),              // If I want extra space between widgets
-            _buildButtonGrid(),
-            // const SizedBox(height: 10),
-            _buildEmailInputField(),
-          ],
+      appBar: _buildAppBar(),
+      body: SingleChildScrollView(  // Kompletering,för att fixa pixel-overflow i y-led.
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildImage(),
+              // const SizedBox(height: 10), // Om du vill ha extra utrymme
+              _buildButtonGrid(),
+              // const SizedBox(height: 10),
+              _buildEmailInputField(),
+            ],
+          ),
         ),
       ),
     );

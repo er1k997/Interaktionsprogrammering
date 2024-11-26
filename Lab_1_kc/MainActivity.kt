@@ -43,14 +43,6 @@ fun MainScreen() {
             .padding(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Bakgrund för översätta symboler
-        Text(
-            text = "",
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF48754B))
-                .padding(4.dp)
-        )
 
         // Rubrik
         Text(
