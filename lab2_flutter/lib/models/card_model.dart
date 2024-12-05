@@ -11,7 +11,7 @@ class CardModel with ChangeNotifier {
   String _cvv = ''; 
   String _cardBrand = "visa"; // Standardlogotyp
 
-  // Dynamisk lista av månader - Fixade till denna också
+  // Dynamisk lista av månader - Uppdaterade denna också
   final List<String> months = List<String>.generate(13, (index) {
     return index == 0 ? 'MM' : index.toString().padLeft(2, '0');
   });

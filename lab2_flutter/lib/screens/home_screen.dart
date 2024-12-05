@@ -87,7 +87,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Kortnummerfält
+  // Kortnummerfält - Uppdaterad
   TextField _buildCardNumberField(CardModel cardModel, FocusNode cardNumberFocus) {
   final isAmex = cardModel.cardBrand == 'amex'; // Kontrollera korttyp - om Amex
   return TextField(
