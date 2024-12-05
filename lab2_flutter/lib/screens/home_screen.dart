@@ -6,10 +6,11 @@ import '../models/card_back_side.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     // Hämta kortmodellen från provider
     final cardModel = Provider.of<CardModel>(context);
 
-    // Fokusnoder för formulärfälten
+    // Definiera fokusnoder för att hantera fältens fokusstatus i formuläret.
     final FocusNode cardNumberFocus = FocusNode();
     final FocusNode cardHolderFocus = FocusNode();
     final FocusNode expiryMonthFocus = FocusNode();
@@ -45,7 +46,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Formulär med kortuppgifter
+  // Bygger formulärsektionen som innehåller alla inputfält.
   Widget _buildForm(CardModel cardModel, FocusNode cardNumberFocus, FocusNode cardHolderFocus, FocusNode expiryMonthFocus, FocusNode expiryYearFocus, FocusNode cvvFocus) {
     return SingleChildScrollView(
       padding: EdgeInsets.only(top: 230), // Ger utrymme för kortet
@@ -88,20 +89,21 @@ class HomeScreen extends StatelessWidget {
 
   // Kortnummerfält
   TextField _buildCardNumberField(CardModel cardModel, FocusNode cardNumberFocus) {
-    return TextField(
-      focusNode: cardNumberFocus,
-      decoration: InputDecoration(
-        labelText: 'Card Number',
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: cardModel.activeField == 'cardNumber' ? Colors.blue : Colors.grey,
-          ),
+  final isAmex = cardModel.cardBrand == 'amex'; // Kontrollera korttyp - om Amex
+  return TextField(
+    focusNode: cardNumberFocus,
+    decoration: InputDecoration(
+      labelText: 'Card Number',
+      border: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: cardModel.activeField == 'cardNumber' ? Colors.blue : Colors.grey,
         ),
       ),
-      maxLength: 16,
-      keyboardType: TextInputType.number,
-      onChanged: (value) {
-        cardModel.updateCardNumber(value);
+    ),
+    maxLength: isAmex ? 15 : 16, // Dynamiskt maxlängd
+    keyboardType: TextInputType.number,
+    onChanged: (value) {
+      cardModel.updateCardNumber(value);
       },
     );
   }
@@ -212,7 +214,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Lägg till lyssnare för att uppdatera det aktiva fältet
+  // Lägger till lyssnare på varje fokusnod för att uppdatera vilket fält som är aktivt.
   void _addFocusListeners(CardModel cardModel, FocusNode cardNumberFocus, FocusNode cardHolderFocus, FocusNode expiryMonthFocus, FocusNode expiryYearFocus, FocusNode cvvFocus) {
     cardNumberFocus.addListener(() {
       cardModel.setActiveField(cardNumberFocus.hasFocus ? 'cardNumber' : '');
@@ -261,7 +263,7 @@ class HomeScreen extends StatelessWidget {
     return Container(
       key: ValueKey('front'),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
           image: AssetImage('images/23.jpeg'),
           fit: BoxFit.cover,
@@ -375,36 +377,36 @@ class HomeScreen extends StatelessWidget {
 
   // Giltighetstid
   Positioned _buildCardExpiry(CardModel cardModel) {
-    return Positioned(
-      bottom: 16,
-      right: 16,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: cardModel.activeField == 'expiryMonth' || cardModel.activeField == 'expiryYear' ? Colors.white : Colors.transparent,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(4),
+  return Positioned(
+    bottom: 16,
+    right: 16,
+    child: Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: cardModel.activeField == 'expiryMonth' || cardModel.activeField == 'expiryYear' ? Colors.white : Colors.transparent,
+          width: 2,
         ),
-        padding: EdgeInsets.all(4),
-        child: Column(
-          children: [
-            Text(
-              "Expires",
-              style: TextStyle(color: Colors.white54, fontSize: 14),
-            ),
-            SizedBox(height: 4),
-            Text(
-              "${cardModel.expiryMonth}/${cardModel.expiryYear}",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+        borderRadius: BorderRadius.circular(4),
       ),
-    );
-  }
+      padding: EdgeInsets.all(4),
+      child: Column(
+        children: [
+          Text(
+            "Expires",
+            style: TextStyle(color: Colors.white54, fontSize: 14),
+          ),
+          SizedBox(height: 4),
+          Text(
+            "${cardModel.expiryMonth}/${cardModel.expiryYearShort}", // Kort år - två siffror
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../card-detection/card_utils.dart';
+import 'dart:core';
 
 class CardModel with ChangeNotifier {
   String _cardNumber = "#### #### #### ####";
@@ -10,12 +11,16 @@ class CardModel with ChangeNotifier {
   String _cvv = ''; 
   String _cardBrand = "visa"; // Standardlogotyp
 
-  final List<String> months = [
-    'MM', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'
-  ];
-  final List<String> years = [
-    'YY', '2024', '2025', '2026', '2027', '2028', '2029', '2030'
-  ];
+  // Dynamisk lista av månader - Fixade till denna också
+  final List<String> months = List<String>.generate(13, (index) {
+    return index == 0 ? 'MM' : index.toString().padLeft(2, '0');
+  });
+
+  // Dynamisk lista av år baserat på aktuellt år - Uppdaterad
+  List<String> get years {
+  final currentYear = DateTime.now().year;
+  return ['YY', ...List.generate(10, (index) => (currentYear + index).toString())];
+  }
 
   // Getters
   String get cardNumber => _cardNumber;
@@ -35,19 +40,34 @@ class CardModel with ChangeNotifier {
     notifyListeners();
   }
 
-  // Uppdatera kortnummer och kortlogotyp
+  // Kortnummer och kortlogotyp - Uppdaterad
   void updateCardNumber(String value) {
-    final cleanedValue = value.replaceAll(RegExp(r'[^0-9]'), '');
-    final paddedValue = cleanedValue.padRight(16, '#');
-    _cardNumber = _formatCardNumber(paddedValue);
-    _cardBrand = CardUtils.getCardBrand(cleanedValue) ?? "visa";
-    notifyListeners();
+  final cleanedValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+  final isAmex = CardUtils.getCardBrand(cleanedValue) == 'amex';
+  final maxLength = isAmex ? 15 : 16; // Amex 15 siffror
+
+  final paddedValue = cleanedValue.padRight(maxLength, '#');
+  _cardNumber = _formatCardNumber(paddedValue, isAmex);
+  _cardBrand = CardUtils.getCardBrand(cleanedValue) ?? "visa";
+  notifyListeners();
   }
 
-  // Formatera kortnummer
-  String _formatCardNumber(String value) {
-    return value.replaceAllMapped(RegExp(r".{1,4}"), (match) => "${match.group(0)} ").trim();
+  // Formatera kortnummer - Uppdaterad
+  String _formatCardNumber(String value, bool isAmex) {
+    if (isAmex) {
+      return value
+          .replaceAllMapped(RegExp(r'^(\d{1,4})(\d{1,6})?(\d{1,5})?'), (match) {
+        return [
+          match.group(1),
+          match.group(2),
+          match.group(3),
+        ].where((e) => e != null).join(' ');
+      }).trim();
+    } else {
+      return value.replaceAllMapped(RegExp(r".{1,4}"), (match) => "${match.group(0)} ").trim();
+    }
   }
+
 
   // Uppdatera kortinnehavarens namn
   void updateCardHolder(String value) {
@@ -55,11 +75,16 @@ class CardModel with ChangeNotifier {
     notifyListeners();
   }
 
-  // Uppdatera giltighetstid
   void updateExpiryDate(String month, String year) {
     _expiryMonth = month;
     _expiryYear = year;
     notifyListeners();
+  }
+
+  // Ny metod för att hämta de sista två siffrorna av året
+  String get expiryYearShort {
+    if (_expiryYear == 'YY') return 'YY';
+    return _expiryYear.substring(2); // Tar bara de sista två siffrorna
   }
 
   // Uppdatera CVV
