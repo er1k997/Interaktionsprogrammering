@@ -26,7 +26,6 @@ export interface Repository {
 const Stack = createStackNavigator<RootStackParamList>();
 
 // Navigeringen mellan skärmar sker med @react-navigation och dess Stack.Navigator
-// { headerShown: false }
 const App = () => {
   return (
     <ApolloProvider client={client}>

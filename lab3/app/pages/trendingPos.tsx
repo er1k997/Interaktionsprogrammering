@@ -135,7 +135,7 @@ const TrendingRepos = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'darkolivegreen', // Set the background color for the entire screen
+        backgroundColor: 'darkolivegreen', 
         padding: 16,
     },
     picker: {
@@ -196,24 +196,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     readMoreText: {
-        color: 'white', // Change text color for buttons
+        color: 'white', 
         fontSize: 15,
         fontFamily: 'sans-serif',
     },
     title: {
-        color: 'white', // Change title color for better visibility on black
+        color: 'white', 
         fontSize: 20,
         fontFamily: 'sans-serif',
         marginBottom: 5,
         fontWeight: 'bold',
     },
     filterRow: {
-        flexDirection: 'column', // Align dropdowns vertically
-        alignItems: 'flex-start', // Align dropdowns to the left
-        justifyContent: 'flex-start', // Ensure no space is added
+        flexDirection: 'column', 
+        alignItems: 'flex-start', 
+        justifyContent: 'flex-start', 
         marginBottom: 20,
         marginLeft: 60,
-        paddingHorizontal: 5, // Optional: very small padding if needed
+        paddingHorizontal: 5, 
     },
 });
 

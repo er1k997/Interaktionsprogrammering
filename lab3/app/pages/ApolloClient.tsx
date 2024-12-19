@@ -4,9 +4,9 @@ import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 const client = new ApolloClient({
   // Klienten är konfigurerad med en HttpLink för att kommunicera med GitHubs GraphQL-API.
   link: new HttpLink({
-    uri: '',
+    uri: 'https://api.github.com/graphql',
     headers: {
-      Authorization: ` `,
+      Authorization: ` `, // Token - Bort tagen för att kunna pusha via github desktop
     },
   }),
   cache: new InMemoryCache(),

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../index';
-import { ScrollView } from 'react-native'; // Add this import
+import { ScrollView } from 'react-native'; 
 
  
 type RepoDetailsRouteProp = RouteProp<RootStackParamList, 'RepoDetails'>;
